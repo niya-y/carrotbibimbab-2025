@@ -1,0 +1,22 @@
+Title,Body,Labels,Assignees
+[PM] MVP 스코프/비스코프 문서 확정,필수 기능과 제외 기능 범위 정의,"team:pm, type:doc, priority:p1",niya-y
+[PM] 마일스톤(M0~M3) 등록 & 보드 규칙 설정,로드맵과 GitHub Projects 보드 설정,"team:pm, type:management",niya-y
+[PM] 개인정보/권한/스토어 정책 정리,스토어 심사/개인정보/권한 사용 문서화,"team:pm, type:policy",niya-y
+[FE] Flutter 프로젝트 초기화,"flavor(dev/stage/prod), go_router 설정","team:fe, type:setup",soohyunism
+[FE] 온보딩/권한 안내 화면,앱 최초 실행 시 약관/개인정보동의 화면,"team:fe, type:feat, priority:p1",soohyunism
+[FE] 카메라 촬영/업로드 기능,"권한 처리, 오버레이 가이드, 업로드 API 연동","team:fe, type:feat, priority:p1",soohyunism
+[FE] 분석 결과/추천/히스토리 화면,서버 응답 기반 UI 렌더링,"team:fe, type:feat, priority:p1",soohyunism
+[FE] 다국어 구조 적용,intl 패키지 기반 다국어 세팅,"team:fe, type:i18n",soohyunism
+[BE] OpenAPI 스키마/Mock 서버,Flutter 개발 병행용 API 스텁 제공,"team:be, type:doc, priority:p1",jjoyu1
+[BE] 업로드 API 구현,이미지 업로드 presigned/multipart 지원,"team:be, type:feat, priority:p1",jjoyu1
+[BE] 분석 요청/결과 API,분석 큐 설계 및 결과 조회 API,"team:be, type:feat",jjoyu1
+[BE] 인증/JWT 구현,사용자 로그인/토큰 시스템,"team:be, type:security",jjoyu1
+[AI] 스킨톤 추출 프로토타입,전처리/피부톤 추출/지표 수립,"team:ai, type:research, priority:p1",hj220316
+[AI] 안전성 점수 규칙 설계,민감성 피부 고려 점수화 시스템,"team:ai, type:algo",hj220316
+[AI] GPT 프롬프트 템플릿 v1,추천/요약/주의문 생성 템플릿 설계,"team:ai, type:prompt",hj220316
+[Infra] CI 초기 세팅,"fe/be/ai workflow 구성, Required checks 설정","team:infra, type:ci",qpzm0821-star
+[Infra] Docker/Compose 로컬 환경,FastAPI+DB+Worker 환경 구성,"team:infra, type:setup",qpzm0821-star
+[Infra] Crashlytics/Sentry 연동,앱 크래시/에러 모니터링 알림 세팅,"team:infra, type:monitoring",qpzm0821-star
+[QA] 테스트 전략 문서,Unit/Widget/Integration/E2E 전략 수립,"team:qa, type:doc",Jamnee
+[QA] 통합 시나리오 자동화,촬영→업로드→분석→추천 전체 플로우 검증,"team:qa, type:test, priority:p1",Jamnee
+[QA] 스토어 프리체크,권한 문구/프라이버시/크래시율 기준 점검,"team:qa, type:release",Jamnee
