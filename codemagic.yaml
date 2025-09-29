@@ -18,22 +18,26 @@ workflows:
     scripts:
       - name: Set up code signing settings on Xcode project
         script: |
-          xcode-project use-profiles
+          xcode-project use-profiles || echo "Code signing setup failed"
       - name: Get Flutter packages
         script: |
           flutter packages get
+      - name: Pod install
+        script: |
+          cd ios && pod install && cd ..
       - name: Install CocoaPods dependencies
         script: |
           cd ios && pod install
-      - name: Flutter build ipa
+      - name: Flutter build ipa with verbose
         script: |
-          flutter build ipa --release \
+          flutter build ipa --release --verbose \
             --build-name=1.0.$BUILD_NUMBER \
             --build-number=$BUILD_NUMBER
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive
       - /tmp/xcodebuild_logs/*.log
-      - flutter_drive.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Logs/**/*.xcactivitylog
     publishing:
       email:
         recipients:
