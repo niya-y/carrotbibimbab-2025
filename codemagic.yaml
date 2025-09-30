@@ -10,27 +10,36 @@ workflows:
         FLUTTER_CHANNEL: "stable"
         XCODE_WORKSPACE: "ios/Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
-        BUNDLE_ID: "com.niya-y.testapp"   # ✅ 본인 앱 번들 ID
-        APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM"  # ✅ 본인 Apple Team ID
+        BUNDLE_ID: "com.niya-y.testapp"        # ← 본인 Bundle ID
+        APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM" # ← 본인 Team ID
 
     scripts:
       - name: Install dependencies
         script: |
           flutter pub get
 
-      # 1) 프로비저닝 프로파일 자동 세팅
-      - name: Fetch signing files
+      # 1) 코드서명 파일 준비 + 수동서명 강제 + 프로파일 주입
+      - name: Fetch & apply signing
         script: |
+          keychain initialize
           app-store-connect fetch-signing-files \
-            --type IOS_APP_STORE \
             --bundle-id $BUNDLE_ID \
+            --type IOS_APP_STORE \
             --create
           keychain add-certificates
-          xcode-project use-profiles --archive-method app-store
+          # 수동 서명 강제 (Runner 타겟/Release 구성에 적용)
+          xcode-project set-target-build-settings "Runner" CODE_SIGN_STYLE="Manual"
+          # 프로젝트/스킴을 명시해서 정확히 주입
+          xcode-project use-profiles \
+            --project ios/Runner.xcodeproj \
+            --scheme $XCODE_SCHEME \
+            --archive-method app-store
 
-      # 2) 코드사인된 상태에서 IPA 빌드
+      # 2) 이제 서명된 상태로 IPA 빌드
       - name: Build iOS for release
         script: |
+          flutter clean
+          flutter pub get
           flutter build ipa --release \
             --dart-define=ENV=prod
 
@@ -43,4 +52,3 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-
