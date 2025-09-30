@@ -1,0 +1,42 @@
+workflows:
+  ios-release:
+    name: iOS TestFlight Release
+    working_directory: flutter_app
+    environment:
+      vars:
+        FLUTTER_CHANNEL: "stable"
+        XCODE_WORKSPACE: "Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+        BUNDLE_ID: "com.niya-y.testapp" # <-- 🔧 여기를 본인 앱의 Bundle ID로 변경
+        APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM" # <-- 🔧 여기를 본인 Apple Team ID로 변경
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Build iOS for release
+        script: |
+          flutter build ipa --release --no-codesign \
+            --dart-define=ENV=prod
+      - name: Code signing
+        script: |
+          app-store-connect fetch-signing-files \
+            --type IOS_APP_STORE \
+            --bundle-id $BUNDLE_ID \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Export IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace $XCODE_WORKSPACE \
+            --scheme $XCODE_SCHEME
+    artifacts:
+      - flutter_app/build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_API_KEY
+        key_id: $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID # Codemagic Environment에 등록
+        submit_to_testflight: true
