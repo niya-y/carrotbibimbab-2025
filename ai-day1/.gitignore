@@ -1,0 +1,49 @@
+@'
+# --- Python 기본 ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+*.dylib
+
+# --- 가상환경 ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- 노트북 체크포인트 ---
+.ipynb_checkpoints/
+
+# --- 빌드/패키징 ---
+build/
+dist/
+*.egg-info/
+
+# --- 에디터/OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- 로그/캐시 ---
+*.log
+*.sqlite*
+*.db
+.cache/
+logs/
+runs/
+outputs/
+checkpoints/
+data/
+
+# --- 비밀/키/환경변수 ---
+.env
+*.env
+*.secret
+secrets.*
+*.pem
+*.key
+'@ | Out-File -Encoding utf8 .gitignore
