@@ -3,14 +3,16 @@ workflows:
     name: iOS TestFlight Release
     working_directory: flutter_app
     environment:
+      flutter: "3.35.5"
+      xcode: latest
+      cocoapods: default
       vars:
         FLUTTER_CHANNEL: "stable"
         XCODE_WORKSPACE: "ios/Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.niya-y.testapp" # <-- 🔧 여기를 본인 앱의 Bundle ID로 변경
         APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM" # <-- 🔧 여기를 본인 Apple Team ID로 변경
-      xcode: latest
-      cocoapods: default
+      
     scripts:
       - name: Install dependencies
         script: |
