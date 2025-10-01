@@ -1,0 +1,78 @@
+name: initial_bf
+description: "BF_ AI Beauty Finder"
+publish_to: 'none' # 이 패키지를 pub.dev에 게시하지 않음
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0' # Flutter 3.16 이상 권장 버전
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # --- 핵심 필수 패키지 ---
+  # Supabase: 백엔드, 인증, 데이터베이스, 스토리지
+  supabase_flutter: ^2.5.0
+  
+  # Google 로그인
+  google_sign_in: ^6.2.1
+  
+  # 환경 변수 관리 (.env 파일)
+  flutter_dotenv: ^5.1.0
+  
+  # 라우팅
+  go_router: ^14.1.0
+  
+  # 권한 관리
+  permission_handler: ^11.3.1
+  
+  # 상태 관리 (Riverpod)
+  flutter_riverpod: ^2.5.1
+  
+  # 모델 클래스 코드 생성
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+
+  # 카메라 및 이미지 선택
+  camera: ^0.11.0
+  image_picker: ^1.0.7
+  #image_cropper: ^5.0.1
+  
+  path_provider: ^2.1.3
+  path: ^1.9.0
+  
+  # 다국어 지원
+  intl: ^0.19.0
+  
+  # 아이콘
+  cupertino_icons: ^1.0.2
+
+  # Shimmer 애니메이션
+  shimmer: ^3.0.0
+  
+  # ⭐ 이미지 슬라이더 패키지 추가
+  #carousel_slider: ^4.2.1
+  
+  # ⭐ 외부 링크 열기 패키지 추가
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # 코드 품질 관리를 위한 Flutter 기본 린트 규칙
+  flutter_lints: ^4.0.0
+
+  # 코드 생성기
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+
+# Flutter 관련 설정
+flutter:
+  uses-material-design: true
+
+  # .env 파일을 앱의 자산(assets)으로 포함시켜서 불러올 수 있도록 설정합니다.
+  assets:
+    - .env
