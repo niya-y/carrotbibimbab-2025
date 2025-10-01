@@ -1,5 +1,6 @@
 flutter/ephemeral/
-
+.env
+*.env
 # Visual Studio user-specific files.
 *.suo
 *.user
