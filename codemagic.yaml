@@ -13,9 +13,7 @@ workflows:
         BUNDLE_ID: "com.niya-y.testapp"        # ← 본인 Bundle ID
         APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM" # ← 본인 Team ID
       # (중요) Apple API Key 통합을 Codemagic Settings에서 연결해 두어야 아래 fetch가 작동합니다.
-      groups:
-        - appstore_connect_api_key   # ← MyASC가 들어있는 그룹명 (없으면 생략 가능)
-
+      
     scripts:
       - name: Install dependencies
         script: |
