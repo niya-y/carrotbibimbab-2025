@@ -10,47 +10,31 @@ workflows:
         FLUTTER_CHANNEL: "stable"
         XCODE_WORKSPACE: "ios/Runner.xcworkspace"
         XCODE_SCHEME: "Runner"
-        BUNDLE_ID: "com.niya-y.testapp"        # ← 본인 Bundle ID
-        APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM" # ← 본인 Team ID
-      # (중요) Apple API Key 통합을 Codemagic Settings에서 연결해 두어야 아래 fetch가 작동합니다.
-      
+        BUNDLE_ID: "com.niya-y.testapp"
+        APP_STORE_CONNECT_TEAM_ID: "F9HD79X8WM"
+
     scripts:
       - name: Install dependencies
         script: |
           flutter pub get
 
-      # 1) 코드서명 파일 준비 + 프로파일 주입 (빌드 전에!)
       - name: Fetch & apply signing
         script: |
-          # 키체인 초기화
           keychain initialize
-
-          # Bundle ID는 위치 인자로 전달 (옵션 아님)
-          app-store-connect fetch-signing-files "$BUNDLE_ID" \
-            --type IOS_APP_STORE \
-            --create
-
-          # 다운받은 인증서/프로파일을 키체인에 추가
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
           keychain add-certificates
-
-          # 프로젝트에 프로파일을 주입
-          # (use-profiles는 --scheme/--project 옵션이 없습니다)
           xcode-project use-profiles --archive-method app-store
 
-      # 2) 서명된 상태에서 IPA 생성
       - name: Build iOS for release
         script: |
           flutter clean
           flutter pub get
-          flutter build ipa --release \
-            --dart-define=ENV=prod
+          flutter build ipa --release --dart-define=ENV=prod
 
     artifacts:
       - flutter_app/build/ios/ipa/*.ipa
 
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_API_KEY
-        key_id: $APP_STORE_CONNECT_KEY_ID
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
+
