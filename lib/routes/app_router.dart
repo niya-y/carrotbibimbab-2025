@@ -8,16 +8,28 @@ import 'package:initial_bf/screens/splash_screen.dart';
 import 'package:initial_bf/screens/auth/auth_selection_screen.dart';
 import 'package:initial_bf/screens/main/main_layout_screen.dart';
 import 'package:initial_bf/screens/main/main_home_screen.dart';
-import 'package:initial_bf/screens/main/my_page_screen.dart'; // MyPageScreen 임포트 추가 (없다면 생성해주세요)
+import 'package:initial_bf/screens/main/my_page_screen.dart';
 
-// ⭐ 새로 추가할 스크린 및 모델 임포트
+// 분석 관련 스크린 및 모델 임포트
 import 'package:initial_bf/screens/analysis/photo_capture_screen.dart';
 import 'package:initial_bf/screens/analysis/photo_confirm_screen.dart';
-import 'package:initial_bf/screens/analysis/analysis_loading_screen.dart'; // ⭐ 분석 로딩 화면 임포트 (이전 단계에서 추가되었어야 함)
-import 'package:initial_bf/models/analysis_result.dart'; // ⭐ 데이터 모델 임포트
-import 'package:initial_bf/screens/result/analysis_report_screen.dart'; // ⭐ 결과 화면 임포트
+import 'package:initial_bf/screens/analysis/analysis_loading_screen.dart';
+import 'package:initial_bf/models/analysis_result.dart';
+import 'package:initial_bf/screens/result/analysis_report_screen.dart';
 
-// Supabase 클라이언트 인스턴스 (이 파일에서도 사용 가능하도록)
+// 추천 제품 관련 스크린 임포트
+import 'package:initial_bf/screens/recommendation/recommended_products_screen.dart';
+import 'package:initial_bf/screens/recommendation/product_detail_screen.dart';
+
+// 마이페이지 하위 메뉴 스크린 임포트
+import 'package:initial_bf/screens/mypage/analysis_history_screen.dart';
+import 'package:initial_bf/screens/mypage/bookmarks_screen.dart';
+
+// ⭐ 설정 및 알림 스크린 임포트
+import 'package:initial_bf/screens/settings/settings_screen.dart';
+import 'package:initial_bf/screens/settings/notifications_screen.dart';
+
+// Supabase 클라이언트 인스턴스
 final supabase = Supabase.instance.client;
 
 final GoRouter router = GoRouter(
@@ -30,17 +42,17 @@ final GoRouter router = GoRouter(
       builder: (_, __) => const PermissionGuideScreen(),
     ),
     GoRoute(
-        path: '/auth',
-        builder: (_, __) =>
-            AuthSelectionScreen()), // AuthSelectionScreen은 const가 아님
+      path: '/auth',
+      builder: (_, __) => AuthSelectionScreen(),
+    ),
 
-    // ⭐ 분석 관련 페이지 라우트
+    // 분석 관련 페이지 라우트
     GoRoute(
-      path: '/analysis', // 분석 시작 화면 (카메라/갤러리 선택)
+      path: '/analysis',
       builder: (context, state) => const PhotoCaptureScreen(),
     ),
     GoRoute(
-      path: '/analysis/confirm', // 촬영/선택된 사진 확인 화면
+      path: '/analysis/confirm',
       builder: (context, state) {
         final imagePath = state.extra as String?;
         if (imagePath == null) {
@@ -50,7 +62,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/analysis/loading', // 분석 로딩 화면
+      path: '/analysis/loading',
       builder: (context, state) {
         final imagePath = state.extra as String?;
         if (imagePath == null) {
@@ -59,14 +71,11 @@ final GoRouter router = GoRouter(
         return AnalysisLoadingScreen(imagePath: imagePath);
       },
     ),
-    // ⭐ 분석 결과 화면 라우트 추가
     GoRoute(
-      path: '/analysis/result', // AI 분석 결과 리포트 화면
+      path: '/analysis/result',
       builder: (context, state) {
-        // extra를 통해 전달된 분석 결과 데이터를 받습니다.
         final analysisResult = state.extra as AnalysisResult?;
         if (analysisResult == null) {
-          // 데이터가 없으면 에러 화면 표시
           return const Scaffold(
               body: Center(child: Text('분석 결과를 받아오지 못했습니다.')));
         }
@@ -74,17 +83,55 @@ final GoRouter router = GoRouter(
       },
     ),
 
+    // 추천 관련 페이지 라우트
+    GoRoute(
+      path: '/recommendations',
+      builder: (context, state) {
+        return const RecommendedProductsScreen();
+      },
+    ),
+    GoRoute(
+      path: '/product/:productId',
+      builder: (context, state) {
+        final productId = state.pathParameters['productId'];
+        if (productId == null) {
+          return const Scaffold(body: Center(child: Text('잘못된 접근입니다.')));
+        }
+        return ProductDetailScreen(productId: productId);
+      },
+    ),
+
+    // 마이페이지 하위 메뉴 라우트
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const AnalysisHistoryScreen(),
+    ),
+    GoRoute(
+      path: '/bookmarks',
+      builder: (context, state) => const BookmarksScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    // ⭐ 알림 페이지 라우트 추가
+    GoRoute(
+      path: '/notifications',
+      builder: (context, state) => const NotificationsScreen(),
+    ),
+
+    // 하단 탭 바를 포함하는 메인 화면 그룹
     ShellRoute(
       builder: (context, state, child) {
         return MainLayoutScreen(child: child);
       },
       routes: [
         GoRoute(
-          path: '/home', // 메인 대시보드
+          path: '/home',
           builder: (context, state) => const MainHomeScreen(),
         ),
         GoRoute(
-          path: '/mypage', // 마이 페이지
+          path: '/mypage',
           builder: (context, state) => const MyPageScreen(),
         ),
       ],
@@ -95,10 +142,9 @@ final GoRouter router = GoRouter(
     final bool goingToAuth = state.matchedLocation == '/auth';
 
     if (state.matchedLocation == '/') {
-      return null; // 스플래시 화면에서는 리다이렉트 안 함
+      return null;
     }
 
-    // 로그인하지 않았는데 로그인/온보딩/권한 페이지가 아니면 로그인 페이지로
     if (!loggedIn &&
         !goingToAuth &&
         !state.matchedLocation.startsWith('/onboarding') &&
@@ -106,12 +152,11 @@ final GoRouter router = GoRouter(
       return '/auth';
     }
 
-    // 로그인했는데 로그인 페이지로 가려고 하면 홈으로
     if (loggedIn && goingToAuth) {
       return '/home';
     }
 
-    return null; // 그 외에는 현재 경로 유지
+    return null;
   },
   errorBuilder: (context, state) => Scaffold(
     body: Center(child: Text('Error: ${state.error}')),

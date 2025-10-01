@@ -5,6 +5,7 @@ import 'package:initial_bf/constants/app_colors.dart';
 import 'package:initial_bf/constants/app_text_styles.dart';
 import 'package:initial_bf/models/analysis_result.dart';
 
+// ⭐ StatelessWidget을 상속(extends)해야 합니다.
 class AnalysisReportScreen extends StatelessWidget {
   final AnalysisResult result;
 
@@ -37,7 +38,6 @@ class AnalysisReportScreen extends StatelessWidget {
 
             // 3. 피부 고민 섹션
             _buildSectionTitle('피부 고민 분석'),
-            // skinConcerns 리스트를 순회하며 각 항목을 UI로 만듦
             for (var concern in result.skinConcerns) ...[
               _buildSkinConcernItem(concern),
               const SizedBox(height: 15),
@@ -56,9 +56,7 @@ class AnalysisReportScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () {
-                  // TODO: 맞춤 제품 추천 화면으로 이동
-                  print('맞춤 제품 보러가기 클릭');
-                  // context.go('/recommendations');
+                  context.go('/recommendations');
                 },
                 child:
                     const Text('나를 위한 맞춤 제품 보러가기', style: AppTextStyles.button),
@@ -88,7 +86,6 @@ class AnalysisReportScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            // TODO: 퍼스널 컬러 타입에 맞는 대표 이미지나 아이콘 추가
             const Icon(Icons.palette, size: 40, color: AppColors.primary),
             const SizedBox(height: 10),
             Text(

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:initial_bf/constants/app_colors.dart';
 import 'package:initial_bf/constants/app_text_styles.dart';
 import 'package:initial_bf/services/auth_service.dart'; // 로그아웃 테스트용
-import 'package:initial_bf/widgets/cards/recent_analysis_card_skeleton.dart'; // ⭐ 추가
-import 'package:initial_bf/widgets/cards/daily_recommendation_card_skeleton.dart'; // ⭐ 추가
-import 'package:initial_bf/widgets/cards/tracking_progress_card_skeleton.dart'; // ⭐ 추가
-import 'package:go_router/go_router.dart'; // context.go() 사용을 위해 필요할 수 있습니다.
+import 'package:initial_bf/widgets/cards/recent_analysis_card_skeleton.dart';
+import 'package:initial_bf/widgets/cards/daily_recommendation_card_skeleton.dart';
+import 'package:initial_bf/widgets/cards/tracking_progress_card_skeleton.dart';
+import 'package:go_router/go_router.dart'; // context.go() 사용을 위해 필요
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -32,7 +32,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           IconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {
-              // TODO: 알림 페이지로 이동
+              // ⭐ 알림 페이지로 이동하도록 수정
+              context.go('/notifications');
             },
           ),
           // ⭐ 테스트용 로그아웃 버튼 (나중에 제거하거나 마이페이지로 이동)
@@ -116,9 +117,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         elevation: 5,
       ),
       onPressed: () {
-        // TODO: 분석 시작 페이지로 이동
+        // 분석 시작 페이지로 이동
         print('분석 시작 버튼 클릭');
-        context.go('/analysis'); // '/analysis' 라우트는 이제 PhotoCaptureScreen으로 연결됨
+        context.go('/analysis');
       },
       child: Text(
         '나의 퍼스널 컬러 분석하기',
@@ -127,8 +128,3 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 }
-
-// --- ⭐ 아래 스켈레톤 위젯 정의는 lib/widgets/cards 폴더로 이동했으므로, 이 파일에서는 제거합니다. ---
-// class RecentAnalysisCardSkeleton extends StatelessWidget { ... }
-// class DailyRecommendationCardSkeleton extends StatelessWidget { ... }
-// class TrackingProgressCardSkeleton extends StatelessWidget { ... }
