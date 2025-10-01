@@ -18,7 +18,7 @@ workflows:
         script: |
           flutter pub get
 
-      # 1) 코드서명 파일 준비 + 수동서명 강제 + 프로파일 주입
+      # 1) 서명파일 준비 + 수동 서명 강제 + 프로파일 주입 (빌드 전에!)
       - name: Fetch & apply signing
         script: |
           keychain initialize
@@ -27,15 +27,15 @@ workflows:
             --type IOS_APP_STORE \
             --create
           keychain add-certificates
-          # 수동 서명 강제 (Runner 타겟/Release 구성에 적용)
+          # 자동서명 방지: Runner 타겟에 Manual 강제
           xcode-project set-target-build-settings "Runner" CODE_SIGN_STYLE="Manual"
-          # 프로젝트/스킴을 명시해서 정확히 주입
+          # 정확한 타겟에 프로비저닝/서명 설정 주입
           xcode-project use-profiles \
             --project ios/Runner.xcodeproj \
             --scheme $XCODE_SCHEME \
             --archive-method app-store
 
-      # 2) 이제 서명된 상태로 IPA 빌드
+      # 2) 서명된 상태에서 IPA 생성
       - name: Build iOS for release
         script: |
           flutter clean
