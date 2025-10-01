@@ -2,25 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-// 각 탭에 해당하는 화면을 임시로 정의합니다. (나중에 실제 화면으로 교체)
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('홈 화면'));
-}
-
-class AnalysisScreen extends StatelessWidget {
-  const AnalysisScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('분석 화면'));
-}
-
-class MyPageScreen extends StatelessWidget {
-  const MyPageScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('마이 페이지'));
-}
-
 class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({required this.child, super.key});
   final Widget child; // 현재 선택된 탭의 화면 위젯
